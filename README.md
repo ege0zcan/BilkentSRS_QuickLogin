@@ -13,7 +13,7 @@ If the remember me option is selected, the credentials are encrypted and saved l
 
 ### Setup ###
 - Clone this repository
--  ``` pip3 install requirements.txt ``` 
+-  ``` pip3 install -r requirements.txt ``` 
 - ```python3 main.py```
 
 ### To Do ### 
