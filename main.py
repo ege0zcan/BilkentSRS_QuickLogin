@@ -10,6 +10,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import os.path
+import email
  
 pyautogui.PAUSE = 0.4
 
@@ -21,22 +22,31 @@ def get_mails(mail_address, mail_pass):
 
   except:
     pyautogui.alert(text='Mail login failed', title='Sorry', button='OK')
-    return
+    return ""
 
   mail.list()
   mail.select("inbox")
   result, data = mail.search(None, "ALL")
-
   ids = data[0]
   id_list = ids.split()
   latest_email_id = id_list[-1]
-
   result, data = mail.fetch(latest_email_id, "(RFC822)")
-
   raw_email = data[0][1]
+  email_message = email.message_from_string(raw_email.decode('utf-8'))
+  subject = email_message['Subject']
+
+  if (subject != "Secure Login Gateway E-Mail Verification Code"):
+    pyautogui.alert(text='No Verification Code', title='Sorry', button='OK')
+    return ""
+
+  if(deletemail.get()):
+        mail.store(latest_email_id, '+FLAGS', r'(\Deleted)')
+
   return raw_email
 
 def get_verification_code(raw_email):
+    if raw_email == "":
+        return ""
     index = raw_email.find("Code: ")
     index += 6
     return raw_email[index : index + 5]
@@ -47,7 +57,8 @@ def on_closing():
         pass_info = srspass.get()
         mail_info = mail.get()
         mailpsw_info = mailpass.get()
-        info_string = id_info + "\n" +pass_info + "\n" + mail_info + "\n" + mailpsw_info
+        deletmail_info = deletemail.get()
+        info_string = id_info + "\n" +pass_info + "\n" + mail_info + "\n" + mailpsw_info + "\n" + str(deletmail_info)
         info_string_encoded = info_string.encode()
 
         if (len(id_info) == 0 or len(pass_info) == 0 or len(mail_info) == 0 or len(mailpsw_info) == 0):
@@ -93,7 +104,7 @@ def login():
     if (len(id_info) == 0):
         srsEntry.config(highlightbackground="red")
         return
-    if (len(pass_info) == 0):
+    if (len(pass_info) < 6):
         passEntry.config(highlightbackground="red")
         return
     if (len(mail_info) == 0):
@@ -123,6 +134,8 @@ def login():
     time.sleep(1)
     raw_email = get_mails(mail_info+"@ug.bilkent.edu.tr", mailpsw_info)
     verification_code = get_verification_code(raw_email.decode("utf-8"))
+    if verification_code == "":
+        return
     if(sys.platform == "linux"):
         pyautogui.typewrite(verification_code)
     else:    
@@ -143,9 +156,9 @@ def hide2(event):
 root = Tk()
 root.title("SRS")
 if(sys.platform == "linux"):
-    root.geometry("500x220")
+    root.geometry("500x240")
 else:
-    root.geometry("440x210")
+    root.geometry("440x230")
 root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
 
 if(os.path.exists('key.key') and os.path.isfile('key.key') and os.stat("key.key").st_size != 0):
@@ -162,12 +175,14 @@ if(os.path.exists('key.key') and os.path.isfile('key.key') and os.stat("key.key"
     mail = StringVar(value=decoded[2])
     mailpass = StringVar(value=decoded[3])
     remember = IntVar(value="1")
+    deletemail = IntVar(value=int(decoded[4]))
 else:
     srsid = StringVar()
     srspass = StringVar()
     mail = StringVar()
     mailpass = StringVar()
     remember = IntVar()
+    deletemail = IntVar()
 
 
 Label(root,text="Bilkent ID",background="palegreen").grid(row=0,padx=5, pady=5)
@@ -201,6 +216,9 @@ but.grid(row=3,column=2,padx=5, pady=0)
 
 Button(root,text="Login",width=15, cursor="coffee_mug",command=login,fg="springgreen4",font=(None, 15)).grid(column=1)
 Checkbutton(root,text="Remember Me",variable=remember).grid(column=1)
+
+Checkbutton(root,text="Keep Mail Inbox Clean",variable=deletemail).grid(column=1)
+
 
 root.bind('<Return>', func)
 root.protocol("WM_DELETE_WINDOW", on_closing)
