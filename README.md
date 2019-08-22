@@ -1,6 +1,6 @@
 # BilkentSRS_QuickLogin
 - Cross Platform application for quickly logging into Bilkent Student Registry System(SRS) 
-- Runs on MacOS and Windows(Linux coming soon) and supports different browsers.
+- Runs on MacOS, Windows and Linux and supports different browsers.
 
 ### How It Works ###
 The user is prompted to enter their SRS ID, SRS Password, Email Address and Email Password. 
@@ -17,6 +17,5 @@ If the remember me option is selected, the credentials are encrypted and saved l
 - ```python3 main.py```
 
 ### To Do ### 
-- Get the program working on Linux
 - Test on more devices to ensure consistency between operating systems
 - The program can be set to run faster or slower depending on the machine 
