@@ -12,7 +12,6 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import os.path
 
 pyautogui.PAUSE = 0.4
-#static_key = b'nnGBfWKikFc7i2OFhWNcgPBFdfIfFS0lwaFEYagaiwI='
 
 def get_mails(mail_address, mail_pass):
   mail = imaplib.IMAP4_SSL('mail.bilkent.edu.tr')
