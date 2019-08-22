@@ -20,7 +20,7 @@ def get_mails(mail_address, mail_pass):
     mail.login(mail_address, mail_pass)
 
   except:
-    pyautogui.alert(text='mal doğru gir şifreni', title='helal', button='OK')
+    pyautogui.alert(text='Mail login failed', title='Sorry', button='OK')
     return
 
   mail.list()
