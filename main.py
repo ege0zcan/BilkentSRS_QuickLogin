@@ -10,7 +10,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import os.path
-
+ 
 pyautogui.PAUSE = 0.4
 
 def get_mails(mail_address, mail_pass):
@@ -104,19 +104,29 @@ def login():
         return
 
     webbrowser.open('https://stars.bilkent.edu.tr/accounts/login')
-    time.sleep(1)
-
-    keyboard.write(id_info)
-    pyautogui.hotkey('tab')
-    time.sleep(0.5)
-    keyboard.write(pass_info)
     time.sleep(0.5)
 
+    if(sys.platform == "linux"):
+        time.sleep(2)
+        pyautogui.typewrite(id_info)
+        pyautogui.hotkey('tab')
+        time.sleep(0.5)
+        pyautogui.typewrite(pass_info)
+    else:
+        keyboard.write(id_info)
+        pyautogui.hotkey('tab')
+        time.sleep(0.5)
+        keyboard.write(pass_info)
+    
+    time.sleep(0.5)
     pyautogui.hotkey('enter')
     time.sleep(1)
     raw_email = get_mails(mail_info+"@ug.bilkent.edu.tr", mailpsw_info)
     verification_code = get_verification_code(raw_email.decode("utf-8"))
-    keyboard.write(verification_code)
+    if(sys.platform == "linux"):
+        pyautogui.typewrite(verification_code)
+    else:    
+        keyboard.write(verification_code)
     pyautogui.hotkey('enter')
 
     pyautogui.alert(text='bravo', title='helal', button='OK')
@@ -132,7 +142,10 @@ def hide2(event):
 
 root = Tk()
 root.title("SRS")
-root.geometry("450x220")
+if(sys.platform == "linux"):
+    root.geometry("500x220")
+else:
+    root.geometry("440x210")
 root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
 
 if(os.path.exists('key.key') and os.path.isfile('key.key') and os.stat("key.key").st_size != 0):
