@@ -21,7 +21,6 @@ def get_mails(mail_address, mail_pass):
     mail.login(mail_address, mail_pass)
 
   except:
-    pyautogui.alert(text='Mail login failed', title='Sorry', button='OK')
     return ""
 
   mail.list()
@@ -36,7 +35,6 @@ def get_mails(mail_address, mail_pass):
   subject = email_message['Subject']
 
   if (subject != "Secure Login Gateway E-Mail Verification Code"):
-    pyautogui.alert(text='No Verification Code', title='Sorry', button='OK')
     return ""
 
   if(deletemail.get()):
@@ -141,8 +139,6 @@ def login():
     else:    
         keyboard.write(verification_code)
     pyautogui.hotkey('enter')
-
-    pyautogui.alert(text='bravo', title='helal', button='OK')
 
 def show(event):
     passEntry['show'] = ""
