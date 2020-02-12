@@ -12,9 +12,7 @@ import email
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-
 pyautogui.PAUSE = 0.4
-
 
 def get_mails(mail_address, mail_pass):
     mail = imaplib.IMAP4_SSL('mail.bilkent.edu.tr')

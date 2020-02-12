@@ -1,5 +1,5 @@
 # BilkentSRS_QuickLogin
-- Cross Platform application for quickly logging into Bilkent Student Registry System(SRS) 
+- Cross Platform application for quickly logging into the 2 Factor Authentication of Student Registry System(SRS)
 - Runs on MacOS, Windows and Linux and supports different browsers.
 
 ### How It Works ###
@@ -18,4 +18,5 @@ If the remember me option is selected, the credentials are encrypted and saved l
 
 ### To Do ### 
 - Test on more devices to ensure consistency between operating systems
-- The program can be set to run faster or slower depending on the machine 
+- Add more browsers, give browser choice to the user
+- Handle failed login attempts
