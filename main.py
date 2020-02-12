@@ -11,6 +11,8 @@ import os.path
 import email
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 pyautogui.PAUSE = 0.4
 
@@ -116,8 +118,8 @@ def login():
         entry.config(highlightbackground="red")
         return
 
-
-    driver = webdriver.Chrome("/Users/ege/Downloads/chromedriver")
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    #driver = webdriver.Chrome("/Users/ege/Downloads/chromedriver")
     driver.get("https://stars.bilkent.edu.tr/")
     link = driver.find_element_by_link_text('SRS')
     link.click()
